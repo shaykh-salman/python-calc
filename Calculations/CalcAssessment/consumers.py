@@ -29,14 +29,10 @@ class LogsConsumer(WebsocketConsumer):
 
     def receive(self, text_data):
         print('Message Received')
-        print(text_data)
         text_data = json.loads(text_data);
         num1 = text_data['num1'];
         num2 = text_data['num2'];
         operator = text_data['operator'];
-        print(num1)
-        print(num2)
-        print(operator)
         async_to_sync(self.channel_layer.group_send)(
             "logs",
             {
