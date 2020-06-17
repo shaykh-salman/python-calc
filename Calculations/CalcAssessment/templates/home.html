@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculation Assessment</title>
+</head>
+<body>
+{% block content %}
+<main class="login-form">
+    <div class="cotainer">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Calculate</div>
+                    <div class="card-body">
+                        <form method="POST" action="{% url 'app:login_request' %}">
+                            {% csrf_token %}
+                            {{form.as_p}}
+                            <div class="form-group row">
+                                <label for="number1"
+                                       class="col-md-4 col-form-label text-md-right">Number1</label>
+                                <div class="col-md-6">
+                                    <input type="number" id="number1" class="form-control" name="number1"
+                                           required autofocus>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="operator"
+                                       class="col-md-4 col-form-label text-md-right">Operator</label>
+                                <div class="col-md-6">
+                                    <select class="form-control" id="operator" name="operator">
+                                        <option>+</option>
+                                        <option>-</option>
+                                        <option>*</option>
+                                        <option>/</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="number2"
+                                       class="col-md-4 col-form-label text-md-right">Number2</label>
+                                <div class="col-md-6">
+                                    <input type="number" id="number2" class="form-control" name="number2"
+                                           required autofocus>
+                                </div>
+                            </div>
+                            <div class="col-md-6 offset-md-4">
+                                <button type="button" id="send" class="btn btn-primary">
+                                    Calculate
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="panel panel-default widget">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-comment"></span>
+                    <h3 class="panel-title">
+                        Recent Logs</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group" id="logs-post">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+<script type="application/javascript">
+        var socket = new WebSocket('ws://localhost:8000');
+        socket.onopen = function open() {
+            console.log('WebSockets connection created.');
+        };
+        if (socket.readyState == WebSocket.OPEN) {
+            socket.onopen();
+        }
+
+        $('#send').click(() => {
+            var num1 = document.getElementById("number1").value;
+            var num2 = document.getElementById("number2").value;
+            var operator = document.getElementById("operator").value;
+            console.log(num1);
+            console.log(num2);
+            console.log(operator);
+            var data = JSON.stringify({
+                "num1": num1,
+                "num2": num2,
+                "operator": operator
+            });
+            socket.send(data);
+        });
+
+        socket.onmessage = function (message) {
+        console.log(message);
+        $("#logs-post").prepend(
+        `<li class="list-group-item">
+                            <div class="row">
+                                <div class="col-xs-10 col-md-11">
+                                    <div class="comment-text">
+                                        ${message.data}
+                                    </div>
+                                    <div>
+                                        By: JF on 2020
+                                    </div>
+                                </div>
+                            </div>
+                        </li>`);
+            console.log("Got websocket message " + message);
+        }
+
+
+
+
+</script>
+{% endblock %}
+</body>
+</html>

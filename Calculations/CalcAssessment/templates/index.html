@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculation Assessment</title>
+</head>
+{% block content %}
+<main class="login-form">
+    <div class="cotainer">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">SignIn</div>
+                    <div class="card-body">
+                        <form method="POST" action="{% url 'app:login_request' %}">
+                            {% csrf_token %}
+                            <div class="form-group row">
+                                <label for="user_name"
+                                       class="col-md-4 col-form-label text-md-right">Username</label>
+                                <div class="col-md-6">
+                                    <input type="text" id="user_name" class="form-control" name="user_name"
+                                           required autofocus>
+                                </div>
+                            </div>
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    Login
+                                </button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</main>
+</form>
+{% endblock %}
+</body>
+</html>
