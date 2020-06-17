@@ -1,4 +1,6 @@
 import json
+from datetime import datetime
+
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 
@@ -33,11 +35,15 @@ class LogsConsumer(WebsocketConsumer):
         num1 = text_data['num1'];
         num2 = text_data['num2'];
         operator = text_data['operator'];
+        user = text_data['user'];
+        postedOn = text_data['postedOn'];
+        postedOn = str(datetime.fromtimestamp(int(postedOn) / 1000.0));
         async_to_sync(self.channel_layer.group_send)(
             "logs",
             {
                 "type": "logs.message",
-                "text": num1 + operator + num2 + ' = ' + calculate(text_data),
+                "text": postedOn + " : " + user + ' logged ' + num1 + operator + num2 + ' = ' + calculate(
+                    text_data),
             },
         )
 
