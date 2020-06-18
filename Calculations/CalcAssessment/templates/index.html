@@ -20,6 +20,11 @@
                                 <div class="col-md-6">
                                     <input type="text" id="user_name" class="form-control" name="user_name"
                                            required autofocus>
+                                    {% if error %}
+                                    <div class="alert alert-danger" role="alert">
+                                        Username already exists
+                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="col-md-6 offset-md-4">

@@ -46,7 +46,7 @@
                                            autofocus>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <div class="text-center">
                                 <button type="button" id="send" class="btn btn-primary">
                                     Calculate
                                 </button>
@@ -68,7 +68,7 @@
                     <h3 class="panel-title">
                         Recent Logs</h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body" id="panel-body">
                     <ul class="list-group" id="logs-post">
                     </ul>
                 </div>
@@ -105,7 +105,13 @@
         });
 
         socket.onmessage = function (message) {
-        console.log(message);
+        var len = $("#logs-post").children().length;
+        if ( len === 10) {
+        var list = document.getElementById("logs-post");
+            list.removeChild(list.childNodes[len-1]);
+        }else{
+            console.log('less');
+        }
         $("#logs-post").prepend(
         `<li class="list-group-item">
                             <div class="row">
@@ -118,6 +124,8 @@
                         </li>`);
             console.log("Got websocket message " + message);
         }
+
+
 
 
 
