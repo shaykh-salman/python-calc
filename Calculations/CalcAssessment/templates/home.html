@@ -78,7 +78,7 @@
 </main>
 <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
 <script type="application/javascript">
-        var socket = new WebSocket('ws://window.location.host:8000');
+        var socket = new WebSocket('ws://'+window.location.host'+:8000');
 
         socket.onopen = function open() {
             console.log('WebSockets connection created.');
